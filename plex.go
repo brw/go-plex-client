@@ -983,6 +983,25 @@ func (p *Plex) CreateLibrary(params CreateLibraryParams) error {
 	return nil
 }
 
+// ScanLibrary scans the library from your Plex server via library key (or id)
+func (p *Plex) ScanLibrary(key string) error {
+	query := fmt.Sprintf("%s/library/sections/%s/refresh", p.URL, key)
+
+	resp, err := p.get(query, p.Headers)
+
+	if err != nil {
+		return err
+	}
+
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return errors.New(resp.Status)
+	}
+
+	return nil
+}
+
 // DeleteLibrary removes the library from your Plex server via library key (or id)
 func (p *Plex) DeleteLibrary(key string) error {
 	query := fmt.Sprintf("%s/library/sections/%s", p.URL, key)

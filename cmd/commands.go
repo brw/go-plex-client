@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/jrudio/go-plex-client"
+	"github.com/Benni-chan/go-plex-client"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/urfave/cli"
 )
