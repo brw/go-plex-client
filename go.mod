@@ -1,4 +1,4 @@
-module github.com/Benni-chan/go-plex-client
+module github.com/Arno500/go-plex-client
 
 go 1.12
 
