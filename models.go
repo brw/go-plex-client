@@ -527,30 +527,39 @@ type BaseAPIResponse struct {
 
 // UserPlexTV plex.tv user. should be used when interacting with plex.tv as the id is an int
 type UserPlexTV struct {
+	XMLName xml.Name `xml:"user"`
 	// ID is an int when signing in to Plex.tv but a string when access own server
-	ID                  int    `json:"id"`
-	UUID                string `json:"uuid"`
-	Email               string `json:"email"`
-	JoinedAt            string `json:"joined_at"`
-	Username            string `json:"username"`
-	Thumb               string `json:"thumb"`
-	HasPassword         bool   `json:"hasPassword"`
-	AuthToken           string `json:"authToken"`
-	AuthenticationToken string `json:"authenticationToken"`
+	ID                  int    `json:"id" xml:"id,attr"`
+	UUID                string `json:"uuid" xml:"uuid,attr"`
+	Email               string `json:"email" xml:"email,attr"`
+	JoinedAt            string `json:"joined_at" xml:"joined-at"`
+	Username            string `json:"username" xml:"username,attr"`
+	Thumb               string `json:"thumb" xml:"thumb,attr"`
+	HasPassword         bool   `json:"hasPassword" xml:"hasPassword,attr"`
+	AuthToken           string `json:"authToken" xml:"authToken,attr"`
+	AuthenticationToken string `json:"authenticationToken" xml:"authentificationToken,attr"`
 	Subscription        struct {
-		Active   bool     `json:"active"`
-		Status   string   `json:"Active"`
-		Plan     string   `json:"lifetime"`
-		Features []string `json:"features"`
-	} `json:"subscription"`
+		Active  bool   `json:"active" xml:"active,attr"`
+		Status  string `json:"Active" xml:"status,attr"`
+		Plan    string `json:"lifetime" xml:"plan,attr"`
+		Feature []struct {
+			ID string `json:"id" xml:"id,attr"`
+		} `json:"feature" xml:"feature"`
+	} `json:"subscription" xml:"subscription"`
 	Roles struct {
-		Roles []string `json:"roles"`
-	} `json:"roles"`
-	Entitlements []string    `json:"entitlements"`
-	ConfirmedAt  string      `json:"confirmedAt"`
-	ForumID      json.Number `json:"forumId"`
-	RememberMe   bool        `json:"rememberMe"`
-	Title        string      `json:"title"`
+		Role []struct {
+			ID string `json:"id" xml:"id,attr"`
+		} `json:"roles" xml:"role"`
+	} `json:"roles" xml:"roles"`
+	Entitlements []struct {
+		Entitlement []struct {
+			ID string `json:"id" xml:"id,attr"`
+		} `json:"entitlement" xml:"entitlement"`
+	} `json:"entitlements" xml:"entitlements"`
+	ConfirmedAt string      `json:"confirmedAt"`
+	ForumID     json.Number `json:"forumId"`
+	RememberMe  bool        `json:"rememberMe"`
+	Title       string      `json:"title" xml:"title,attr"`
 }
 
 // User plex server user. only difference is id is a string

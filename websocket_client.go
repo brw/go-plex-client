@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"os"
 	"time"
 
 	"github.com/gorilla/websocket"
@@ -79,12 +78,12 @@ type TranscodeSession struct {
 	Context              string  `json:"context"`
 	Duration             int64   `json:"duration"`
 	Key                  string  `json:"key"`
-	Progress             float64 `json:"progress"`
+	Progress             float64 `json:"progress,string"`
 	Protocol             string  `json:"protocol"`
 	Remaining            int64   `json:"remaining"`
 	SourceAudioCodec     string  `json:"sourceAudioCodec"`
 	SourceVideoCodec     string  `json:"sourceVideoCodec"`
-	Speed                float64 `json:"speed"`
+	Speed                float64 `json:"speed,string"`
 	Throttled            bool    `json:"throttled"`
 	TranscodeHwRequested bool    `json:"transcodeHwRequested"`
 	VideoCodec           string  `json:"videoCodec"`
@@ -174,7 +173,7 @@ func (e *NotificationEvents) OnTranscodeUpdate(fn func(n NotificationContainer))
 }
 
 // SubscribeToNotifications connects to your server via websockets listening for events
-func (p *Plex) SubscribeToNotifications(events *NotificationEvents, interrupt <-chan os.Signal, fn func(error)) {
+func (p *Plex) SubscribeToNotifications(events *NotificationEvents, interrupt <-chan interface{}, fn func(error)) {
 	plexURL, err := url.Parse(p.URL)
 
 	if err != nil {
@@ -182,7 +181,7 @@ func (p *Plex) SubscribeToNotifications(events *NotificationEvents, interrupt <-
 		return
 	}
 
-	websocketURL := url.URL{Scheme: "ws", Host: plexURL.Host, Path: "/:/websockets/notifications"}
+	websocketURL := url.URL{Scheme: "wss", Host: plexURL.Host, Path: "/:/websockets/notifications"}
 
 	headers := http.Header{
 		"X-Plex-Token": []string{p.Token},
@@ -244,20 +243,19 @@ func (p *Plex) SubscribeToNotifications(events *NotificationEvents, interrupt <-
 					fn(err)
 				}
 			case <-interrupt:
-				fmt.Println("interrupt")
 				// To cleanly close a connection, a client should send a close
 				// frame and wait for the server to close the connection.
 				err := c.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""))
 
 				if err != nil {
-					fmt.Println("write close:", err)
+					fmt.Println("Closing error: ", err)
 					fn(err)
 				}
 
 				select {
 				case <-done:
 				case <-time.After(time.Second):
-					fmt.Println("closing websocket...")
+					fmt.Println("WebSocket closing")
 					c.Close()
 				}
 				return
