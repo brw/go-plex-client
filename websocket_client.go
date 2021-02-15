@@ -203,9 +203,13 @@ func (p *Plex) SubscribeToNotifications(events *NotificationEvents, interrupt <-
 		for {
 			_, message, err := c.ReadMessage()
 
-			if err != nil {
+			if err != nil && websocket.IsUnexpectedCloseError(err, websocket.CloseNormalClosure) {
 				fmt.Println("read:", err)
 				fn(err)
+				return
+			}
+
+			if err != nil && websocket.IsCloseError(err, websocket.CloseNormalClosure) {
 				return
 			}
 
