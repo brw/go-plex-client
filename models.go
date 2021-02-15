@@ -61,6 +61,7 @@ type Metadata struct {
 	LibrarySectionKey     string       `json:"librarySectionKey"`
 	LibrarySectionTitle   string       `json:"librarySectionTitle"`
 	OriginallyAvailableAt string       `json:"originallyAvailableAt"`
+	OriginalTitle         string       `json:"originalTitle"`
 	ParentIndex           int64        `json:"parentIndex"`
 	ParentKey             string       `json:"parentKey"`
 	ParentRatingKey       string       `json:"parentRatingKey"`
