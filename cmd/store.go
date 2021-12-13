@@ -4,14 +4,13 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/dgraph-io/badger"
+	"github.com/dgraph-io/badger/v3"
 )
 
 type store struct {
 	db       *badger.DB
 	isClosed bool
 	keys     storeKeys
-	secret   []byte
 }
 
 type storeKeys struct {
@@ -40,8 +39,7 @@ func initDataStore(dirName string) (store, error) {
 
 	options := badger.DefaultOptions(dirName)
 
-	options.Dir = dirName
-	options.ValueDir = dirName
+	options = options.WithLoggingLevel(badger.WARNING)
 
 	kvStore, err := badger.Open(options)
 
@@ -76,38 +74,6 @@ func (s store) Close() {
 	s.isClosed = true
 }
 
-func (s store) getSecret() []byte {
-	var secret []byte
-
-	// an error is returned when the key is not found
-	// so just return an empty secret
-	s.db.View(func(txn *badger.Txn) error {
-		item, err := txn.Get(s.keys.appSecret)
-
-		if err != nil {
-			return err
-		}
-
-		_secret, err := item.ValueCopy(nil)
-
-		if err != nil {
-			return err
-		}
-
-		secret = _secret
-
-		return nil
-	})
-
-	return secret
-}
-
-func (s store) saveSecret(secret []byte) error {
-	return s.db.Update(func(txn *badger.Txn) error {
-		return txn.Set(s.keys.appSecret, secret)
-	})
-}
-
 func (s store) getPlexToken() (string, error) {
 	var plexToken string
 
@@ -118,15 +84,11 @@ func (s store) getPlexToken() (string, error) {
 			return err
 		}
 
-		_plexToken, err := item.ValueCopy(nil)
+		return item.Value(func(val []byte) error {
+			plexToken = string(append([]byte{}, val...))
 
-		if err != nil {
-			return err
-		}
-
-		plexToken = string(_plexToken)
-
-		return nil
+			return nil
+		})
 	}); err != nil {
 		return plexToken, err
 	}
@@ -162,21 +124,17 @@ func (s store) getPlexServer() (server, error) {
 			return err
 		}
 
-		serializedServer, err := item.ValueCopy(nil)
+		return item.Value(func(val []byte) error {
+			serializedServer := append([]byte{}, val...)
 
-		if err != nil {
-			return err
-		}
+			plexServer, err = unserializeServer(serializedServer)
 
-		_plexServer, err := unserializeServer(serializedServer)
+			if err != nil {
+				return err
+			}
 
-		if err != nil {
-			return err
-		}
-
-		plexServer = _plexServer
-
-		return nil
+			return nil
+		})
 	})
 
 	return plexServer, err

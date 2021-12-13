@@ -15,6 +15,7 @@ type Plex struct {
 	ClientIdentifier string
 	Headers          headers
 	HTTPClient       http.Client
+	DownloadClient   http.Client
 }
 
 // SearchResults a list of media returned when searching
@@ -54,6 +55,7 @@ type Metadata struct {
 	GrandparentThumb      string       `json:"grandparentThumb"`
 	GrandparentTitle      string       `json:"grandparentTitle"`
 	GUID                  string       `json:"guid"`
+	AltGUIDs              []AltGUID    `json:"Guid"`
 	Index                 int64        `json:"index"`
 	Key                   string       `json:"key"`
 	LastViewedAt          int          `json:"lastViewedAt"`
@@ -83,6 +85,11 @@ type Metadata struct {
 	Year                  int          `json:"year"`
 	Director              []TaggedData `json:"Director"`
 	Writer                []TaggedData `json:"Writer"`
+}
+
+// AltGUID represents a Globally Unique Identifier for a metadata provider that is not actively being used.
+type AltGUID struct {
+	ID string `json:"id"`
 }
 
 // MetadataV1 ...
@@ -591,10 +598,8 @@ type User struct {
 	Title        string   `json:"title"`
 }
 
-// SignInResponse ...
-type SignInResponse struct {
-	User UserPlexTV `json:"user"`
-}
+// SignInResponse response from plex.tv sign in
+type SignInResponse UserPlexTV
 
 // ServerInfo is the result of the https://plex.tv/api/servers endpoint
 type ServerInfo struct {
