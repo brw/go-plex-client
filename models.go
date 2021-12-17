@@ -95,17 +95,17 @@ type AltGUID struct {
 // MetadataV1 ...
 type MetadataV1 struct {
 	Metadata
-	Index            int64     `json:"index,string"`
-	ParentIndex      int64     `json:"parentIndex,string"`
-	AddedAt          string    `json:"addedAt"`
-	Duration         string    `json:"duration"`
-	LastViewedAt     string    `json:"lastViewedAt"`
-	LibrarySectionID string    `json:"librarySectionID"`
-	Media            []MediaV1 `json:"Media"`
-	Rating           string    `json:"rating"`
-	UpdatedAt        string    `json:"updatedAt"`
-	ViewOffset       string    `json:"viewOffset"`
-	Year             string    `json:"year"`
+	Index            int64       `json:"index,string"`
+	ParentIndex      int64       `json:"parentIndex,string"`
+	AddedAt          json.Number `json:"addedAt"`
+	Duration         string      `json:"duration"`
+	LastViewedAt     string      `json:"lastViewedAt"`
+	LibrarySectionID string      `json:"librarySectionID"`
+	Media            []MediaV1   `json:"Media"`
+	Rating           string      `json:"rating"`
+	UpdatedAt        string      `json:"updatedAt"`
+	ViewOffset       string      `json:"viewOffset"`
+	Year             string      `json:"year"`
 }
 
 // Media media info
