@@ -4,8 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"github.com/Arno500/go-plex-client"
-	"github.com/mitchellh/go-homedir"
+
 	"github.com/urfave/cli"
 )
 

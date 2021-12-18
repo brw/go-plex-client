@@ -69,7 +69,7 @@ type Metadata struct {
 	ParentRatingKey       string       `json:"parentRatingKey"`
 	ParentThumb           string       `json:"parentThumb"`
 	ParentTitle           string       `json:"parentTitle"`
-	RatingCount           string       `json:"ratingCount"`
+	RatingCount           int          `json:"ratingCount"`
 	Rating                float64      `json:"rating"`
 	RatingKey             string       `json:"ratingKey"`
 	SessionKey            string       `json:"sessionKey"`
@@ -95,55 +95,55 @@ type AltGUID struct {
 // MetadataV1 ...
 type MetadataV1 struct {
 	Metadata
-	Index            int64       `json:"index,string"`
-	ParentIndex      int64       `json:"parentIndex,string"`
-	AddedAt          json.Number `json:"addedAt"`
-	Duration         string      `json:"duration"`
-	LastViewedAt     string      `json:"lastViewedAt"`
-	LibrarySectionID string      `json:"librarySectionID"`
-	Media            []MediaV1   `json:"Media"`
-	Rating           string      `json:"rating"`
-	UpdatedAt        string      `json:"updatedAt"`
-	ViewOffset       string      `json:"viewOffset"`
-	Year             string      `json:"year"`
+	Index            int64     `json:"index"`
+	ParentIndex      int64     `json:"parentIndex"`
+	AddedAt          int64     `json:"addedAt"`
+	Duration         int64     `json:"duration"`
+	LastViewedAt     Timestamp `json:"lastViewedAt"`
+	LibrarySectionID string    `json:"librarySectionID"`
+	Media            []MediaV1 `json:"Media"`
+	Rating           float64   `json:"rating"`
+	UpdatedAt        Timestamp `json:"updatedAt"`
+	ViewOffset       int64     `json:"viewOffset"`
+	Year             int       `json:"year"`
 }
 
 // Media media info
 type Media struct {
-	AspectRatio           float32 `json:"aspectRatio"`
-	AudioChannels         int     `json:"audioChannels"`
-	AudioCodec            string  `json:"audioCodec"`
-	AudioProfile          string  `json:"audioProfile"`
-	Bitrate               int     `json:"bitrate"`
-	Container             string  `json:"container"`
-	DeletedAt             int     `json:"deletedAt"`
-	Duration              int     `json:"duration"`
-	Has64bitOffsets       bool    `json:"has64bitOffsets"`
-	Height                int     `json:"height"`
-	ID                    int     `json:"id"`
-	OptimizedForStreaming int     `json:"optimizedForStreaming"`
-	Selected              bool    `json:"selected"`
-	VideoCodec            string  `json:"videoCodec"`
-	VideoFrameRate        string  `json:"videoFrameRate"`
-	VideoProfile          string  `json:"videoProfile"`
-	VideoResolution       string  `json:"videoResolution"`
-	Width                 int     `json:"width"`
-	Part                  []Part  `json:"Part"`
+	AspectRatio           string `json:"aspectRatio"`
+	AudioChannels         int    `json:"audioChannels"`
+	AudioCodec            string `json:"audioCodec"`
+	AudioProfile          string `json:"audioProfile"`
+	Bitrate               int    `json:"bitrate"`
+	Container             string `json:"container"`
+	DeletedAt             int    `json:"deletedAt"`
+	Duration              int    `json:"duration"`
+	Has64bitOffsets       bool   `json:"has64bitOffsets"`
+	Height                int    `json:"height"`
+	ID                    int    `json:"id"`
+	OptimizedForStreaming int    `json:"optimizedForStreaming"`
+	Selected              bool   `json:"selected"`
+	VideoCodec            string `json:"videoCodec"`
+	VideoFrameRate        string `json:"videoFrameRate"`
+	VideoProfile          string `json:"videoProfile"`
+	VideoResolution       string `json:"videoResolution"`
+	Width                 int    `json:"width"`
+	Part                  []Part `json:"Part"`
 }
 
 // MediaV1 media information version 1
 type MediaV1 struct {
 	Media
-	Part                  []PartV1 `json:"Part"`
-	AudioChannels         float32  `json:"audioChannels,string"`
-	AspectRatio           float32  `json:"aspectRatio,string"`
-	Bitrate               int      `json:"bitrate,string"`
-	Duration              int      `json:"duration,string"`
-	Has64bitOffsets       string   `json:"has64bitOffsets"`
-	Height                int      `json:"height,string"`
-	ID                    int      `json:"id,string"`
-	OptimizedForStreaming int      `json:"optimizedForStreaming,string"`
-	Width                 int      `json:"width,string"`
+	Part                  []PartV1  `json:"Part"`
+	AudioChannels         int       `json:"audioChannels"`
+	AspectRatio           float32   `json:"aspectRatio,string"`
+	Bitrate               int       `json:"bitrate"`
+	Duration              Timestamp `json:"duration"`
+	Has64bitOffsets       bool    `json:"has64bitOffsets"`
+	Height                int       `json:"height"`
+	ID                    int       `json:"id,string"`
+	OptimizedForStreaming bool      `json:"optimizedForStreaming"`
+	Width                 int       `json:"width"`
 }
 
 // MediaContainer contains media info
@@ -776,21 +776,21 @@ type Stream struct {
 // StreamV1 stream info version 1
 type StreamV1 struct {
 	Stream
-	BitDepth         int     `json:"bitDepth,string"`
-	Default          string  `json:"default"`
-	Bitrate          int     `json:"bitrate,string"`
-	FrameRate        float64 `json:"frameRate,string"`
-	HasScalingMatrix string  `json:"hasScalingMatrix"`
-	Height           int     `json:"height,string"`
-	Width            int     `json:"width,string"`
+	BitDepth         int     `json:"bitDepth"`
+	Default          bool    `json:"default"`
+	Bitrate          int     `json:"bitrate"`
+	FrameRate        float64 `json:"frameRate"`
+	HasScalingMatrix bool    `json:"hasScalingMatrix"`
+	Height           int     `json:"height"`
+	Width            int     `json:"width"`
 	ID               int     `json:"id,string"`
-	Index            int     `json:"index,string"`
-	Level            int     `json:"level,string"`
-	RefFrames        int     `json:"refFrames,string"`
-	StreamType       int     `json:"streamType,string"`
-	Channels         int     `json:"channels,string"`
-	SamplingRate     int     `json:"samplingRate,string"`
-	Selected         string  `json:"selected"`
+	Index            int     `json:"index"`
+	Level            int     `json:"level"`
+	RefFrames        int     `json:"refFrames"`
+	StreamType       int     `json:"streamType"`
+	Channels         int     `json:"channels"`
+	SamplingRate     int     `json:"samplingRate"`
+	Selected         bool    `json:"selected"`
 }
 
 // Part ...
@@ -798,7 +798,7 @@ type Part struct {
 	AudioProfile          string   `json:"audioProfile"`
 	Container             string   `json:"container"`
 	Decision              string   `json:"decision"`
-	Duration              int      `json:"duration"`
+	Duration              int64    `json:"duration"`
 	File                  string   `json:"file"`
 	Has64bitOffsets       bool     `json:"has64bitOffsets"`
 	HasThumbnail          string   `json:"hasThumbnail"`
@@ -814,11 +814,11 @@ type Part struct {
 // PartV1 part version 1
 type PartV1 struct {
 	Part
-	Duration              int        `json:"duration,string"`
-	Has64bitOffsets       string     `json:"has64bitOffsets"`
+	Duration              int64      `json:"duration"`
+	Has64bitOffsets       bool       `json:"has64bitOffsets"`
 	ID                    int        `json:"id,string"`
-	OptimizedForStreaming string     `json:"optimizedForStreaming"`
-	Size                  int        `json:"size,string"`
+	OptimizedForStreaming bool       `json:"optimizedForStreaming"`
+	Size                  int        `json:"size"`
 	Stream                []StreamV1 `json:"Stream"`
 }
 

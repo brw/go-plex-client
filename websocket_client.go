@@ -13,9 +13,9 @@ import (
 // TimelineEntry ...
 type TimelineEntry struct {
 	Identifier    string `json:"identifier"`
-	ItemID        int64  `json:"itemID"`
+	ItemID        int64  `json:"itemID,string"`
 	MetadataState string `json:"metadataState"`
-	SectionID     int64  `json:"sectionID"`
+	SectionID     int64  `json:"sectionID,string"`
 	State         int64  `json:"state"`
 	Title         string `json:"title"`
 	Type          int64  `json:"type"`
@@ -78,12 +78,12 @@ type TranscodeSession struct {
 	Context              string  `json:"context"`
 	Duration             int64   `json:"duration"`
 	Key                  string  `json:"key"`
-	Progress             float64 `json:"progress,string"`
+	Progress             float64 `json:"progress"`
 	Protocol             string  `json:"protocol"`
 	Remaining            int64   `json:"remaining"`
 	SourceAudioCodec     string  `json:"sourceAudioCodec"`
 	SourceVideoCodec     string  `json:"sourceVideoCodec"`
-	Speed                float64 `json:"speed,string"`
+	Speed                float64 `json:"speed"`
 	Throttled            bool    `json:"throttled"`
 	TranscodeHwRequested bool    `json:"transcodeHwRequested"`
 	VideoCodec           string  `json:"videoCodec"`
@@ -150,8 +150,10 @@ func NewNotificationEvents() *NotificationEvents {
 	return &NotificationEvents{
 		events: map[string]func(n NotificationContainer){
 			"playing":                   func(n NotificationContainer) {},
+			"progress":                  func(n NotificationContainer) {},
 			"reachability":              func(n NotificationContainer) {},
 			"transcode.end":             func(n NotificationContainer) {},
+			"transcodeSession.start":    func(n NotificationContainer) {},
 			"transcodeSession.end":      func(n NotificationContainer) {},
 			"transcodeSession.update":   func(n NotificationContainer) {},
 			"preference":                func(n NotificationContainer) {},
