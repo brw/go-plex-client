@@ -1,7 +1,6 @@
 package plex
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -203,36 +202,31 @@ func (p *Plex) SubscribeToNotifications(events *NotificationEvents, interrupt <-
 		defer close(done)
 
 		for {
-			_, message, err := c.ReadMessage()
+			var notif WebsocketNotification
+			err := c.ReadJSON(&notif)
 
-			if err != nil && websocket.IsUnexpectedCloseError(err, websocket.CloseNormalClosure) {
+			// If the connection was normally closed, everything is fine, return as expected
+			if err != nil && websocket.IsCloseError(err, websocket.CloseNormalClosure) {
+				return
+			}
+
+			// But if there was a real unknown error, exit and report the error
+			if err != nil {
 				fmt.Println("read:", err)
 				fn(err)
 				return
 			}
 
-			if err != nil && websocket.IsCloseError(err, websocket.CloseNormalClosure) {
-				return
-			}
-
 			// fmt.Printf("\t%s\n", string(message))
 
-			var notif WebsocketNotification
-
-			if err := json.Unmarshal(message, &notif); err != nil {
-				fmt.Printf("convert message to json failed: %v\n", err)
-				continue
-			}
-
-			// fmt.Println(notif.Type)
-			fn, ok := events.events[notif.Type]
+			eventCallback, ok := events.events[notif.Type]
 
 			if !ok {
 				fmt.Printf("unknown websocket event name: %v\n", notif.Type)
 				continue
 			}
 
-			fn(notif.NotificationContainer)
+			eventCallback(notif.NotificationContainer)
 		}
 	}()
 
