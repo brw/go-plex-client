@@ -11,9 +11,9 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"regexp"
 	"os"
 	"path/filepath"
+	"regexp"
 	"runtime"
 	"strings"
 	"time"
@@ -1207,6 +1207,10 @@ func (p *Plex) GetSessions() (CurrentSessions, error) {
 	if resp.StatusCode != http.StatusOK {
 		return CurrentSessions{}, errors.New(resp.Status)
 	}
+
+	// qsdficxnjk, err := io.ReadAll(resp.Body)
+
+	// fmt.Printf("%s\n", qsdficxnjk)
 
 	var result CurrentSessions
 

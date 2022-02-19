@@ -46,6 +46,8 @@ type Metadata struct {
 	User                  User         `json:"User"`
 	AddedAt               int          `json:"addedAt"`
 	Art                   string       `json:"art"`
+	AudienceRating        float64      `json:"audienceRating`
+	AudienceRatingImage   string       `json:"audienceRatingImage`
 	ContentRating         string       `json:"contentRating"`
 	Duration              int          `json:"duration"`
 	GrandparentArt        string       `json:"grandparentArt"`
@@ -70,7 +72,7 @@ type Metadata struct {
 	ParentThumb           string       `json:"parentThumb"`
 	ParentTitle           string       `json:"parentTitle"`
 	RatingCount           int          `json:"ratingCount"`
-	Rating                float64      `json:"rating"`
+	Rating                []Rating     `json:"rating"`
 	RatingKey             string       `json:"ratingKey"`
 	SessionKey            string       `json:"sessionKey"`
 	Summary               string       `json:"summary"`
@@ -80,6 +82,7 @@ type Metadata struct {
 	TitleSort             string       `json:"titleSort"`
 	Type                  string       `json:"type"`
 	UpdatedAt             int          `json:"updatedAt"`
+	UserRating            float64      `json:"userRating,string"`
 	ViewCount             json.Number  `json:"viewCount"`
 	ViewOffset            int          `json:"viewOffset"`
 	Year                  int          `json:"year"`
@@ -102,7 +105,7 @@ type MetadataV1 struct {
 	LastViewedAt     Timestamp `json:"lastViewedAt"`
 	LibrarySectionID string    `json:"librarySectionID"`
 	Media            []MediaV1 `json:"Media"`
-	Rating           float64   `json:"rating"`
+	Rating           []Rating  `json:"rating"`
 	UpdatedAt        Timestamp `json:"updatedAt"`
 	ViewOffset       int64     `json:"viewOffset"`
 	Year             int       `json:"year"`
@@ -139,7 +142,7 @@ type MediaV1 struct {
 	AspectRatio           float32   `json:"aspectRatio,string"`
 	Bitrate               int       `json:"bitrate"`
 	Duration              Timestamp `json:"duration"`
-	Has64bitOffsets       bool    `json:"has64bitOffsets"`
+	Has64bitOffsets       bool      `json:"has64bitOffsets"`
 	Height                int       `json:"height"`
 	ID                    int       `json:"id,string"`
 	OptimizedForStreaming bool      `json:"optimizedForStreaming"`
@@ -724,6 +727,14 @@ type TranscodeSessionsResponse struct {
 		Width         int     `json:"width"`
 	} `json:"_children"`
 	ElementType string `json:"_elementType"`
+}
+
+// Rating ...
+type Rating struct {
+	Count int     `json:"count,string"`
+	Image string  `json:"image"`
+	Type  string  `json:"type"`
+	Value float64 `json:"value,string"`
 }
 
 // Stream ...
