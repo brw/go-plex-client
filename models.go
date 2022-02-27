@@ -46,8 +46,8 @@ type Metadata struct {
 	User                  User         `json:"User"`
 	AddedAt               int          `json:"addedAt"`
 	Art                   string       `json:"art"`
-	AudienceRating        float64      `json:"audienceRating`
-	AudienceRatingImage   string       `json:"audienceRatingImage`
+	AudienceRating        float64      `json:"audienceRating"`
+	AudienceRatingImage   string       `json:"audienceRatingImage"`
 	ContentRating         string       `json:"contentRating"`
 	Duration              int          `json:"duration"`
 	GrandparentArt        string       `json:"grandparentArt"`
@@ -105,7 +105,7 @@ type MetadataV1 struct {
 	LastViewedAt     Timestamp `json:"lastViewedAt"`
 	LibrarySectionID string    `json:"librarySectionID"`
 	Media            []MediaV1 `json:"Media"`
-	Rating           []Rating  `json:"rating"`
+	Rating           float64   `json:"rating"`
 	UpdatedAt        Timestamp `json:"updatedAt"`
 	ViewOffset       int64     `json:"viewOffset"`
 	Year             int       `json:"year"`

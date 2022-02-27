@@ -159,6 +159,9 @@ func NewNotificationEvents() *NotificationEvents {
 			"update.statechange":        func(n NotificationContainer) {},
 			"activity":                  func(n NotificationContainer) {},
 			"backgroundProcessingQueue": func(n NotificationContainer) {},
+			"status":                    func(n NotificationContainer) {},
+			"timeline":                  func(n NotificationContainer) {},
+			"account":                   func(n NotificationContainer) {},
 		},
 	}
 }
