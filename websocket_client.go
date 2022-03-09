@@ -92,14 +92,14 @@ type TranscodeSession struct {
 // Setting ...
 type Setting struct {
 	Advanced bool   `json:"advanced"`
-	Default  string `json:"default"`
+	Default  bool   `json:"default"`
 	Group    string `json:"group"`
 	Hidden   bool   `json:"hidden"`
 	ID       string `json:"id"`
 	Label    string `json:"label"`
 	Summary  string `json:"summary"`
 	Type     string `json:"type"`
-	Value    int64  `json:"value"`
+	Value    string `json:"value"`
 }
 
 // NotificationContainer read pms notifications
