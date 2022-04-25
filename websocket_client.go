@@ -45,9 +45,11 @@ type StatusNotification struct {
 
 // PlaySessionStateNotification ...
 type PlaySessionStateNotification struct {
+	ClientIdentifier string `json:"clientIdentifier"`
 	GUID             string `json:"guid"`
 	Key              string `json:"key"`
 	PlayQueueItemID  int64  `json:"playQueueItemID"`
+	PlayQueueID 	 int64  `json:"playQueueID"`
 	RatingKey        string `json:"ratingKey"`
 	SessionKey       string `json:"sessionKey"`
 	State            string `json:"state"`

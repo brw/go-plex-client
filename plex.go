@@ -782,8 +782,35 @@ func (p *Plex) StopPlayback(machineID string) error {
 	return nil
 }
 
-// GetDevices returns a list of your Plex devices (servers, players, controllers, etc)
+// GetServerDevices returns a list of your Plex devices (servers, players, controllers, etc)
 func (p *Plex) GetDevices() ([]PMSDevices, error) {
+	query := plexURL + "/devices.xml"
+
+	resp, err := p.get(query, p.Headers)
+
+	if err != nil {
+		return []PMSDevices{}, err
+	}
+
+	defer resp.Body.Close()
+
+	result := new(resourcesResponse)
+
+	if resp.StatusCode != http.StatusOK {
+		return []PMSDevices{}, errors.New(resp.Status)
+	}
+
+	if err := xml.NewDecoder(resp.Body).Decode(result); err != nil {
+		fmt.Println(err.Error())
+
+		return []PMSDevices{}, err
+	}
+
+	return result.Device, nil
+}
+
+// GetServerDevices returns a list of Plex servers with some added info, notably connection data
+func (p *Plex) GetServerDevices() ([]PMSDevices, error) {
 	query := plexURL + "/api/resources?includeHttps=1"
 
 	resp, err := p.get(query, p.Headers)
@@ -816,7 +843,7 @@ func (p *Plex) GetServers() ([]PMSDevices, error) {
 	// but if the caller does not know the ip beforehand, we can grab it
 	// from plex.tv so we'll use https://plex.tv endpoint to give that option
 
-	devices, err := p.GetDevices()
+	devices, err := p.GetServerDevices()
 
 	if err != nil {
 		return devices, err
@@ -1207,10 +1234,6 @@ func (p *Plex) GetSessions() (CurrentSessions, error) {
 	if resp.StatusCode != http.StatusOK {
 		return CurrentSessions{}, errors.New(resp.Status)
 	}
-
-	// qsdficxnjk, err := io.ReadAll(resp.Body)
-
-	// fmt.Printf("%s\n", qsdficxnjk)
 
 	var result CurrentSessions
 
