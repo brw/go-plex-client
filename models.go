@@ -72,7 +72,8 @@ type Metadata struct {
 	ParentThumb           string       `json:"parentThumb"`
 	ParentTitle           string       `json:"parentTitle"`
 	RatingCount           int          `json:"ratingCount"`
-	Rating                []Rating     `json:"rating"`
+	Ratings               []Rating     `json:"Rating"`
+	Rating                float64      `json:"rating"`
 	RatingKey             string       `json:"ratingKey"`
 	SessionKey            string       `json:"sessionKey"`
 	Summary               string       `json:"summary"`
@@ -734,7 +735,7 @@ type Rating struct {
 	Count int     `json:"count,string"`
 	Image string  `json:"image"`
 	Type  string  `json:"type"`
-	Value float64 `json:"value,string"`
+	Value float64 `json:"value"`
 }
 
 // Stream ...
