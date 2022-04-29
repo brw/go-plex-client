@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -735,7 +736,28 @@ type Rating struct {
 	Count int     `json:"count,string"`
 	Image string  `json:"image"`
 	Type  string  `json:"type"`
-	Value float64 `json:"value"`
+	Value FixedRating `json:"value"`
+}
+
+type FixedRating float32
+
+func (value *FixedRating) UnmarshalJSON(data []byte) error {
+	var isAlreadyFloat float32
+
+	if err := json.Unmarshal(data, &isAlreadyFloat); err == nil {
+		*value = FixedRating(isAlreadyFloat)
+		return nil
+	}
+
+	var isString string
+
+	if err := json.Unmarshal(data, &isString); err != nil {
+		return err
+	}
+
+	conv, _ := strconv.ParseFloat(isString, 32)
+	*value = FixedRating(conv)
+	return nil
 }
 
 // Stream ...
