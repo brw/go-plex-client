@@ -811,7 +811,7 @@ func (p *Plex) GetDevices() ([]PMSDevices, error) {
 
 // GetServerDevices returns a list of Plex servers with some added info, notably connection data
 func (p *Plex) GetServerDevices() ([]PMSDevices, error) {
-	query := plexURL + "/api/resources?includeHttps=1"
+	query := plexURL + "/api/resources?includeHttps=1&includeRelay=1&includeIPv6=1"
 
 	resp, err := p.get(query, p.Headers)
 
