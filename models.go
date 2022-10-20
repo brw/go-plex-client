@@ -479,6 +479,7 @@ type Connection struct {
 	Port     string `json:"port" xml:"port,attr"`
 	URI      string `json:"uri" xml:"uri,attr"`
 	Local    int    `json:"local" xml:"local,attr"`
+	Relay	 bool   `json:"relay" xml:"relay,attr"`
 }
 
 // BaseAPIResponse info about the Plex Media Server
