@@ -2,6 +2,7 @@ package plex
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 	"time"
@@ -49,7 +50,7 @@ type PlaySessionStateNotification struct {
 	GUID             string `json:"guid"`
 	Key              string `json:"key"`
 	PlayQueueItemID  int64  `json:"playQueueItemID"`
-	PlayQueueID 	 int64  `json:"playQueueID"`
+	PlayQueueID      int64  `json:"playQueueID"`
 	RatingKey        string `json:"ratingKey"`
 	SessionKey       string `json:"sessionKey"`
 	State            string `json:"state"`
@@ -179,11 +180,11 @@ func (e *NotificationEvents) OnTranscodeUpdate(fn func(n NotificationContainer))
 }
 
 // SubscribeToNotifications connects to your server via websockets listening for events
-func (p *Plex) SubscribeToNotifications(events *NotificationEvents, interrupt <-chan interface{}, fn func(error)) {
+func (p *Plex) SubscribeToNotifications(events *NotificationEvents, interrupt <-chan interface{}, errCb func(error), doneCb func()) {
 	plexURL, err := url.Parse(p.URL)
 
 	if err != nil {
-		fn(err)
+		errCb(err)
 		return
 	}
 
@@ -196,7 +197,7 @@ func (p *Plex) SubscribeToNotifications(events *NotificationEvents, interrupt <-
 	c, _, err := websocket.DefaultDialer.Dial(websocketURL.String(), headers)
 
 	if err != nil {
-		fn(err)
+		errCb(err)
 		return
 	}
 
@@ -212,13 +213,14 @@ func (p *Plex) SubscribeToNotifications(events *NotificationEvents, interrupt <-
 
 			// If the connection was normally closed, everything is fine, return as expected
 			if err != nil && websocket.IsCloseError(err, websocket.CloseNormalClosure) {
+				doneCb()
 				return
 			}
 
 			// But if there was a real unknown error, exit and report the error
 			if err != nil {
 				fmt.Println("read:", err)
-				fn(err)
+				errCb(err)
 				return
 			}
 
@@ -227,7 +229,7 @@ func (p *Plex) SubscribeToNotifications(events *NotificationEvents, interrupt <-
 			eventCallback, ok := events.events[notif.Type]
 
 			if !ok {
-				fmt.Printf("unknown websocket event name: %v\n", notif.Type)
+				log.Printf("Unknown websocket event name: %v\n", notif.Type)
 				continue
 			}
 
@@ -245,7 +247,7 @@ func (p *Plex) SubscribeToNotifications(events *NotificationEvents, interrupt <-
 				err := c.WriteMessage(websocket.TextMessage, []byte(t.String()))
 
 				if err != nil {
-					fn(err)
+					errCb(err)
 				}
 			case <-interrupt:
 				// To cleanly close a connection, a client should send a close
@@ -254,7 +256,7 @@ func (p *Plex) SubscribeToNotifications(events *NotificationEvents, interrupt <-
 
 				if err != nil {
 					fmt.Println("Closing error: ", err)
-					fn(err)
+					errCb(err)
 				}
 
 				select {
