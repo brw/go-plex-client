@@ -52,6 +52,7 @@ type Metadata struct {
 	ContentRating         string       `json:"contentRating"`
 	Duration              int          `json:"duration"`
 	GrandparentArt        string       `json:"grandparentArt"`
+	GrandparentGUID       string       `json:"grandparentGuid"`
 	GrandparentKey        string       `json:"grandparentKey"`
 	GrandparentRatingKey  string       `json:"grandparentRatingKey"`
 	GrandparentTheme      string       `json:"grandparentTheme"`
@@ -67,6 +68,7 @@ type Metadata struct {
 	LibrarySectionTitle   string       `json:"librarySectionTitle"`
 	OriginallyAvailableAt string       `json:"originallyAvailableAt"`
 	OriginalTitle         string       `json:"originalTitle"`
+	ParentGUID            string       `json:"parentGuid"`
 	ParentIndex           int64        `json:"parentIndex"`
 	ParentKey             string       `json:"parentKey"`
 	ParentRatingKey       string       `json:"parentRatingKey"`
@@ -479,7 +481,7 @@ type Connection struct {
 	Port     string `json:"port" xml:"port,attr"`
 	URI      string `json:"uri" xml:"uri,attr"`
 	Local    int    `json:"local" xml:"local,attr"`
-	Relay	 bool   `json:"relay" xml:"relay,attr"`
+	Relay    bool   `json:"relay" xml:"relay,attr"`
 }
 
 // BaseAPIResponse info about the Plex Media Server
@@ -734,9 +736,9 @@ type TranscodeSessionsResponse struct {
 
 // Rating ...
 type Rating struct {
-	Count int     `json:"count,string"`
-	Image string  `json:"image"`
-	Type  string  `json:"type"`
+	Count int         `json:"count,string"`
+	Image string      `json:"image"`
+	Type  string      `json:"type"`
 	Value FixedRating `json:"value"`
 }
 
