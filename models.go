@@ -66,6 +66,7 @@ type Metadata struct {
 	LibrarySectionID      int          `json:"librarySectionID"`
 	LibrarySectionKey     string       `json:"librarySectionKey"`
 	LibrarySectionTitle   string       `json:"librarySectionTitle"`
+	Live                  string       `json:"live"`
 	OriginallyAvailableAt string       `json:"originallyAvailableAt"`
 	OriginalTitle         string       `json:"originalTitle"`
 	ParentGUID            string       `json:"parentGuid"`
@@ -783,7 +784,7 @@ type Stream struct {
 	ColorSpace         string  `json:"colorSpace"`
 	Default            bool    `json:"default"`
 	DisplayTitle       string  `json:"displayTitle"`
-	Duration           string  `json:"duration"`
+	Duration           float64 `json:"duration"`
 	FrameRate          float64 `json:"frameRate"`
 	FrameRateMode      string  `json:"frameRateMode"`
 	Gain               string  `json:"gain"`
