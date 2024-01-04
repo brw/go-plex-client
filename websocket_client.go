@@ -252,12 +252,7 @@ func (p *Plex) SubscribeToNotifications(events *NotificationEvents, interrupt <-
 			case <-interrupt:
 				// To cleanly close a connection, a client should send a close
 				// frame and wait for the server to close the connection.
-				err := c.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""))
-
-				if err != nil {
-					fmt.Println("Closing error: ", err)
-					errCb(err)
-				}
+				_ = c.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""))
 
 				select {
 				case <-done:
