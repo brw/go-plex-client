@@ -86,6 +86,9 @@ type Metadata struct {
 	Title                 string       `json:"title"`
 	TitleSort             string       `json:"titleSort"`
 	Type                  string       `json:"type"`
+	Slug                  string       `json:"slug"`
+	ParentSlug            string       `json:"parentSlug"`
+	GrandparentSlug       string       `json:"grandparentSlug"`
 	UpdatedAt             int          `json:"updatedAt"`
 	UserRating            float64      `json:"userRating,string"`
 	ViewCount             json.Number  `json:"viewCount"`
@@ -892,4 +895,114 @@ type CurrentSessions struct {
 		Metadata []MetadataV1 `json:"Metadata"`
 		Size     int          `json:"size"`
 	} `json:"MediaContainer"`
+}
+
+type DiscoverTaggedData struct {
+	Tag    string `json:"tag"`
+	Filter string `json:"filter"`
+	ID     string `json:"id"`
+}
+
+type DiscoverRole struct {
+	DiscoverTaggedData
+	Key   string `json:"key"`
+	Role  string `json:"role"`
+	Slug  string `json:"slug"`
+	Thumb string `json:"thumb"`
+	Type  string `json:"type"`
+}
+
+type DiscoverGenre struct {
+	DiscoverTaggedData
+	Context   string `json:"context"`
+	Key       string `json:"key"`
+	RatingKey string `json:"ratingKey"`
+	Slug      string `json:"slug"`
+	Thumb     string `json:"thumb"`
+	Type      string `json:"type"`
+}
+
+type DiscoverGuid struct {
+	ID string `json:"id"`
+}
+
+type DiscoverImage struct {
+	Alt  string `json:"alt"`
+	Type string `json:"type"`
+	URL  string `json:"url"`
+}
+
+type DiscoverRating struct {
+	Image string  `json:"image"`
+	Type  string  `json:"type"`
+	Value float64 `json:"value"`
+}
+
+type DiscoverSeasonType struct {
+	ID     string `json:"id"`
+	Source string `json:"source"`
+	Tag    string `json:"tag"`
+	Title  string `json:"title"`
+}
+
+type DiscoverSummary struct {
+	Size int    `json:"size"`
+	Tag  string `json:"tag"`
+	Type string `json:"type"`
+}
+
+type DiscoverMetadata struct {
+	Countries             []DiscoverTaggedData `json:"Country"`
+	Directors             []DiscoverRole       `json:"Director"`
+	Genres                []DiscoverGenre      `json:"Genre"`
+	GUIDs                 []DiscoverGuid       `json:"Guid"`
+	Images                []DiscoverImage      `json:"Image"`
+	Networks              []DiscoverTaggedData `json:"Network"`
+	Ratings               []DiscoverRating     `json:"Rating"`
+	Roles                 []DiscoverRole       `json:"Role"`
+	SeasonTypes           []DiscoverSeasonType `json:"SeasonType"`
+	Studios               []DiscoverTaggedData `json:"Studio"`
+	Summaries             []DiscoverSummary    `json:"Summary"`
+	Writers               []DiscoverRole       `json:"Writer"`
+	AddedAt               int                  `json:"addedAt"`
+	Art                   string               `json:"art"`
+	AudienceRating        float64              `json:"audienceRating"`
+	AudienceRatingImage   string               `json:"audienceRatingImage"`
+	Banner                string               `json:"banner"`
+	ContentRating         string               `json:"contentRating"`
+	Duration              int                  `json:"duration"`
+	GUID                  string               `json:"guid"`
+	IMDBRatingCount       int                  `json:"imdbRatingCount"`
+	Key                   string               `json:"key"`
+	LeafCount             int                  `json:"leafCount"`
+	OriginalTitle         string               `json:"originalTitle"`
+	OriginallyAvailableAt string               `json:"originallyAvailableAt"`
+	PublicPagesURL        string               `json:"publicPagesURL"`
+	Rating                float64              `json:"rating"`
+	RatingImage           string               `json:"ratingImage"`
+	RatingKey             string               `json:"ratingKey"`
+	Slug                  string               `json:"slug"`
+	Studio                string               `json:"studio"`
+	Summary               string               `json:"summary"`
+	Tagline               string               `json:"tagline"`
+	Theme                 string               `json:"theme"`
+	Thumb                 string               `json:"thumb"`
+	Title                 string               `json:"title"`
+	Type                  string               `json:"type"`
+	UserState             bool                 `json:"userState"`
+	Year                  int                  `json:"year"`
+}
+
+type DiscoverMediaContainer struct {
+	Metadata            []DiscoverMetadata `json:"Metadata"`
+	Identifier          string             `json:"identifier"`
+	LibrarySectionID    string             `json:"librarySectionID"`
+	LibrarySectionTitle string             `json:"librarySectionTitle"`
+	Offset              int                `json:"offset"`
+	Size                int                `json:"size"`
+	TotalSize           int                `json:"totalSize"`
+}
+
+type DiscoverMetadataResponse struct {
+	MediaContainer DiscoverMediaContainer `json:"MediaContainer"`
 }

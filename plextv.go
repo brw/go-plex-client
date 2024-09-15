@@ -261,3 +261,30 @@ func (p Plex) MyAccount() (UserPlexTV, error) {
 
 	return account, err
 }
+
+const plexDiscoverURL = "https://discover.provider.plex.tv"
+
+// GetDiscoverMetadata returns the Plex Discover metadata for a given item
+func (p Plex) GetDiscoverMetadata(path string) (DiscoverMetadataResponse, error) {
+	endpoint := plexDiscoverURL + "/library/metadata" + path
+
+	resp, err := p.get(endpoint, p.Headers)
+
+	if err != nil {
+		return DiscoverMetadataResponse{}, err
+	}
+
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return DiscoverMetadataResponse{}, errors.New(resp.Status)
+	}
+
+	var metadata DiscoverMetadataResponse
+
+	if err := json.NewDecoder(resp.Body).Decode(&metadata); err != nil {
+		return DiscoverMetadataResponse{}, err
+	}
+
+	return metadata, nil
+}
